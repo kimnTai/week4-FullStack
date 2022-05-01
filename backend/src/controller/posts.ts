@@ -10,8 +10,11 @@ class PostsController {
      * @memberof PostsController
      */
     async getPosts(req: Request, res: Response): Promise<void> {
-        const result = await Posts.find();
-        res.status(200).json({ status: "success", result });
+        const { limit } = req.query;
+        const result = await Posts.find()
+            .sort("-createdAt")
+            .limit(Number(limit) ?? 10);
+        res.send({ status: "success", result });
     }
 
     /**
