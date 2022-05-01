@@ -25,9 +25,9 @@ class PostsController {
      * @memberof PostsController
      */
     async createPosts(req: Request, res: Response): Promise<void> {
-        const { content, type, name } = req.body;
+        const { content, type, user } = req.body;
         try {
-            const result = await Posts.create({ content, type, name });
+            const result = await Posts.create({ content, type, user });
             res.status(200).json({ status: "success", result });
         } catch (error: any) {
             res.status(400).json({ status: "error", message: error.message });
