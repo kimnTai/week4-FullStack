@@ -14,6 +14,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.use("/posts", Router.posts);
+app.use("/users", Router.users);
 app.listen(process.env.PORT, () => console.log("伺服器啟動中"));
 
 export default app;
