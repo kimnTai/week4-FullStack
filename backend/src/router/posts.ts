@@ -1,26 +1,16 @@
 import express from "express";
-import PostsController from "../controller/posts";
+import * as Controller from "../controller";
 
-const postsRouter = express.Router();
+const router = express.Router();
 
-postsRouter.get("/", (req, res) => {
-    PostsController.getPosts(req, res);
-});
+router.get("/", Controller.Post.getPosts);
 
-postsRouter.post("/", (req, res) => {
-    PostsController.createPosts(req, res);
-});
+router.post("/", Controller.Post.createPosts);
 
-postsRouter.delete("/", (req, res) => {
-    PostsController.deleteAll(req, res);
-});
+router.delete("/", Controller.Post.deleteAll);
 
-postsRouter.delete("/:id", (req, res) => {
-    PostsController.deleteById(req, res);
-});
+router.delete("/:id", Controller.Post.deleteById);
 
-postsRouter.patch("/:id", (req, res) => {
-    PostsController.editPosts(req, res);
-});
+router.patch("/:id", Controller.Post.editPosts);
 
-export default postsRouter;
+export default router;
