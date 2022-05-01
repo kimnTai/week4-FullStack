@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Posts from "../model/post";
+import * as Model from "../model";
 
 class PostsController {
     /**
@@ -11,7 +11,8 @@ class PostsController {
      */
     async getPosts(req: Request, res: Response): Promise<void> {
         const { limit } = req.query;
-        const result = await Posts.find()
+        const result = await Model.Posts.find()
+            .populate({ path: "user", select: "name photo" })
             .sort("-createdAt")
             .limit(Number(limit) ?? 10);
         res.send({ status: "success", result });
@@ -27,7 +28,7 @@ class PostsController {
     async createPosts(req: Request, res: Response): Promise<void> {
         const { content, type, user } = req.body;
         try {
-            const result = await Posts.create({ content, type, user });
+            const result = await Model.Posts.create({ content, type, user });
             res.status(200).json({ status: "success", result });
         } catch (error: any) {
             res.status(400).json({ status: "error", message: error.message });
@@ -42,7 +43,7 @@ class PostsController {
      * @memberof PostsController
      */
     async deleteAll(req: Request, res: Response): Promise<void> {
-        await Posts.deleteMany({});
+        await Model.Posts.deleteMany({});
         res.status(200).json({ status: "success", message: "刪除成功" });
     }
 
@@ -57,8 +58,8 @@ class PostsController {
         const { id } = req.params;
         const { content, type, name } = req.body;
         try {
-            await Posts.findByIdAndUpdate(id, { content, type, name });
-            const result = await Posts.findById(id);
+            await Model.Posts.findByIdAndUpdate(id, { content, type, name });
+            const result = await Model.Posts.findById(id);
             res.status(200).json({ status: "success", result });
         } catch (error: any) {
             res.status(400).json({ status: "error", message: error.message });
@@ -74,7 +75,7 @@ class PostsController {
      */
     async deleteById(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
-        const deleteResult = await Posts.findByIdAndDelete(id);
+        const deleteResult = await Model.Posts.findByIdAndDelete(id);
         if (deleteResult) {
             res.status(200).json({ status: "success", message: "刪除成功" });
         } else {
