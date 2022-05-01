@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema<IUser>(
         email: { type: String, required: [true, "email 未填寫"] },
         photo: { type: String, default: "https://i.imgur.com/tPmUQVM.png" },
     },
-    { versionKey: false }
+    { versionKey: false, timestamps: true }
 );
 
 const Users = mongoose.model("user", userSchema);
