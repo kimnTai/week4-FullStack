@@ -2,10 +2,10 @@
 
 <template>
     <nav
-        class="fixed inset-x-0 bottom-4 px-2 lg:static lg:bottom-0 lg:w-[35.55%] lg:flex-shrink-0 lg:self-start lg:border-2 lg:border-black-100 lg:py-8 lg:px-6"
+        class="bg-white fixed inset-x-0 bottom-4 px-2 lg:static lg:bottom-0 lg:w-[35.55%] lg:flex-shrink-0 lg:self-start lg:border-2 lg:border-black-100 lg:py-8 lg:px-6"
     >
         <a
-            href="./post-news.html"
+            href="#"
             class="hidden text-center shadow-btn lg:mb-6 lg:block lg:w-full lg:rounded-lg lg:border-2 lg:border-black-100 lg:bg-primary lg:font-azeret lg:font-bold lg:leading-[50px] lg:text-white lg:hover:bg-yellow-100 lg:hover:text-black-100"
         >
             張貼動態
@@ -22,7 +22,7 @@
                 </a>
             </li>
             <li class="hidden lg:block">
-                <a href="./personal-wall.html" class="block text-black-100 hover:text-primary">
+                <a href="#" class="block text-black-100 hover:text-primary">
                     <img
                         src="../assets/images/dynamic-wall/user.png"
                         alt="avatar"
@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li>
-                <a href="./track-list.html" class="peer group block text-black-100 hover:text-primary">
+                <a href="#" class="peer group block text-black-100 hover:text-primary">
                     <span
                         class="flex h-[48px] w-[48px] items-center justify-center rounded-full border-[3px] border-black-100 bg-white text-xl group-hover:bg-primary group-hover:text-white lg:mr-3 lg:inline-block lg:h-[50px] lg:w-[50px] lg:border-2 lg:bg-[#E2EDFA] lg:text-center lg:leading-[45px]"
                     >
@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li>
-                <a href="./liked-posts.html" class="group block text-black-100 hover:text-primary">
+                <a href="#" class="group block text-black-100 hover:text-primary">
                     <span
                         class="flex h-[48px] w-[48px] items-center justify-center rounded-full border-[3px] border-black-100 bg-white text-xl group-hover:bg-primary group-hover:text-white lg:mr-3 lg:inline-block lg:h-[50px] lg:w-[50px] lg:border-2 lg:bg-[#E2EDFA] lg:text-center lg:leading-[45px]"
                     >

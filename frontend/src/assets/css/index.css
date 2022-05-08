@@ -1,3 +1,11 @@
 @tailwind base;
+
+.bg_pattern {
+    background-color: #efece7;
+    background-image: linear-gradient(#70707050 1px, transparent 1px),
+        linear-gradient(to right, #70707050 1px, #efece7 1px);
+    background-size: 64px 64px;
+}
+
 @tailwind components;
 @tailwind utilities;
