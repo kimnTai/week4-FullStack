@@ -4,7 +4,16 @@ import Header from "./components/Header.vue";
 
 <template>
     <Header></Header>
-    <router-view />
+    <router-view v-slot="{ Component }">
+        <suspense timeout="0">
+            <template #default>
+                <component :is="Component" :key="$route.path"></component>
+            </template>
+            <template #fallback>
+                <div>Loading...</div>
+            </template>
+        </suspense>
+    </router-view>
 </template>
 
 <style lang="scss"></style>

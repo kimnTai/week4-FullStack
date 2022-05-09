@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import Sidebar from "../components/Sidebar.vue";
 import { ref } from "vue";
+import axios from "axios";
 
+const { data } = await axios.get("https://sheltered-retreat-72836.herokuapp.com/posts");
+const result = ref();
+result.value = data;
+console.log(data);
 </script>
 
 <template>
