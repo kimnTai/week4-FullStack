@@ -3,10 +3,12 @@ import Sidebar from "../components/Sidebar.vue";
 import { ref } from "vue";
 import axios from "axios";
 
-const { data } = await axios.get("https://sheltered-retreat-72836.herokuapp.com/posts");
-const result = ref();
-result.value = data;
-console.log(data);
+const result = ref<IPost[]>();
+try {
+    const { data } = await axios.get("http://localhost:3005/posts");
+    result.value = data.result;
+    console.log(data.result);
+} catch (error) {}
 </script>
 
 <template>
@@ -35,34 +37,29 @@ console.log(data);
                     </div>
                 </div>
                 <ul class="space-y-4">
-                    <li class="bg-white rounded-lg border-2 border-black-100 p-6 shadow-card">
+                    <li v-for="item in result" class="bg-white rounded-lg border-2 border-black-100 p-6 shadow-card">
                         <div class="mb-4 flex items-center">
                             <img
-                                src="../assets/images/dynamic-wall/user.png"
+                                :src="item.user.photo"
                                 alt="avatar"
                                 class="mr-4 h-[45px] w-[45px] flex-shrink-0 object-cover"
                             />
                             <div class="flex-grow">
-                                <a href="#" class="font-bold text-black-100 hover:text-primary hover:underline"
-                                    >邊緣小杰</a
-                                >
-                                <div class="font-baloo text-xs leading-5 text-gray-300">2022/1/10 12:00</div>
+                                <a href="#" class="font-bold text-black-100 hover:text-primary hover:underline">
+                                    {{ item.user.name }}
+                                </a>
+                                <div class="font-baloo text-xs leading-5 text-gray-300">{{ item.createdAt }}</div>
                             </div>
                         </div>
                         <p class="text-black-100">
-                            外面看起來就超冷....<br />
-                            我決定回被窩繼續睡....
+                            {{ item.content }}
                         </p>
                         <picture>
-                            <source
-                                media="(min-width: 1024px)"
-                                srcset="../assets/images/dynamic-wall/post-photo@2x.png"
-                            />
-                            <img class="mt-4" src="../assets/images/dynamic-wall/post-photo.png" alt="post photo" />
+                            <img class="mt-4" :src="item.image" alt="post photo" />
                         </picture>
                         <button class="hidden lg:mt-4 lg:inline-block lg:text-xl lg:leading-none lg:text-primary">
                             <i class="fa-regular fa-thumbs-up mr-1"></i>
-                            <span class="inline-block font-baloo leading-[27px] text-black-100">12</span>
+                            <span class="inline-block font-baloo leading-[27px] text-black-100">{{ item.likes }}</span>
                         </button>
                         <div class="hidden lg:mt-[18px] lg:flex lg:items-center">
                             <img
@@ -83,7 +80,7 @@ console.log(data);
                                 </button>
                             </div>
                         </div>
-                        <ul class="hidden lg:mt-[18px] lg:block lg:space-y-4">
+                        <!-- <ul class="hidden lg:mt-[18px] lg:block lg:space-y-4">
                             <li class="flex rounded-[12px] bg-[#EFECE7]/30 py-[18px] px-4">
                                 <img
                                     src="../assets/images/dynamic-wall/user.png"
@@ -96,98 +93,7 @@ console.log(data);
                                     <p>真的～我已經準備冬眠了</p>
                                 </div>
                             </li>
-                            <li class="flex rounded-[12px] bg-[#EFECE7]/30 py-[18px] px-4">
-                                <img
-                                    src="../assets/images/dynamic-wall/user.png"
-                                    alt="avatar"
-                                    class="mr-3 h-10 w-10 flex-shrink-0 object-cover"
-                                />
-                                <div class="flex-grow text-black-100">
-                                    <a href="#" class="hover:text-primary hover:underline">波吉</a>
-                                    <div class="mb-1 text-xs leading-5 text-gray-300">2022/1/11 10:00</div>
-                                    <p>會嗎？我沒穿衣服都不覺得冷</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="bg-white hidden rounded-lg border-2 border-black-100 p-6 shadow-card lg:block">
-                        <div class="mb-4 flex items-center">
-                            <img
-                                src="../assets/images/dynamic-wall/user.png"
-                                alt="avatar"
-                                class="mr-4 h-[45px] w-[45px] flex-shrink-0 object-cover"
-                            />
-                            <div class="flex-grow">
-                                <a href="#" class="font-bold text-black-100 hover:text-primary hover:underline"
-                                    >米卡莎</a
-                                >
-                                <div class="font-baloo text-xs leading-5 text-gray-300">2022/1/10 12:00</div>
-                            </div>
-                        </div>
-                        <p class="text-black-100">搶到想要的 NFT 啦！ya~~</p>
-                        <picture>
-                            <source
-                                media="(min-width: 1024px)"
-                                srcset="../assets/images/dynamic-wall/post-photo1@2x.png"
-                            />
-                            <img class="mt-4" src="../assets/images/dynamic-wall/post-photo1.png" alt="post photo" />
-                        </picture>
-                        <button class="hidden lg:mt-4 lg:inline-block lg:text-xl lg:leading-none lg:text-gray-300">
-                            <i class="fa-regular fa-thumbs-up"></i>
-                            <span class="inline-block text-base leading-[22px]">成為第一個按讚的朋友</span>
-                        </button>
-                        <div class="hidden lg:mt-[18px] lg:flex lg:items-center">
-                            <img
-                                src="../assets/images/dynamic-wall/user.png"
-                                alt="avatar"
-                                class="mr-2 h-10 w-10 flex-shrink-0 object-cover"
-                            />
-                            <div class="flex flex-grow">
-                                <input
-                                    type="text"
-                                    class="flex-grow rounded-none border-y-2 border-l-2 border-black-100 py-2 px-4 text-black-100"
-                                    placeholder="留言..."
-                                />
-                                <button
-                                    class="w-[28.89%] flex-shrink-0 border-2 border-black-100 bg-yellow-100 font-azeret text-black-100"
-                                >
-                                    留言
-                                    <span class="animate-spin text-xs">
-                                        <i class="fa-solid fa-spinner"></i>
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="bg-white rounded-lg border-2 border-black-100 p-6 shadow-card">
-                        <div class="mb-4 flex items-center">
-                            <img
-                                src="../assets/images/dynamic-wall/user.png"
-                                alt="avatar"
-                                class="mr-4 h-[45px] w-[45px] flex-shrink-0 object-cover"
-                            />
-                            <div class="flex-grow">
-                                <a href="#" class="font-bold text-black-100 hover:text-primary hover:underline">波吉</a>
-                                <div class="font-baloo text-xs leading-5 text-gray-300">2022/1/10 12:00</div>
-                            </div>
-                        </div>
-                        <p class="text-black-100">我一定要成為很棒棒的國王！</p>
-                    </li>
-                    <li class="bg-white rounded-lg border-2 border-black-100 p-6 shadow-card">
-                        <div class="mb-4 flex items-center">
-                            <img
-                                src="../assets/images/dynamic-wall/user.png"
-                                alt="avatar"
-                                class="mr-4 h-[45px] w-[45px] flex-shrink-0 object-cover"
-                            />
-                            <div class="flex-grow">
-                                <a href="#" class="font-bold text-black-100 hover:text-primary hover:underline"
-                                    >阿爾敏</a
-                                >
-                                <div class="font-baloo text-xs leading-5 text-gray-300">2022/1/10 12:00</div>
-                            </div>
-                        </div>
-                        <p class="text-black-100">各位我有一個作戰計畫</p>
+                        </ul> -->
                     </li>
                 </ul>
             </div>
