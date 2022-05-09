@@ -6,3 +6,22 @@ declare module "*.vue" {
     const component: DefineComponent<{}, {}, any>;
     export default component;
 }
+
+type IUser = {
+    [key in "name" | "photo" | "_id"]: string;
+};
+
+type IPost = {
+    /**使用者 */
+    user: IUser;
+    tags: string;
+    type: string;
+    /**貼文圖片 */
+    image: string;
+    createdAt: Date;
+    /**內容 */
+    content: string;
+    /**按讚數 */
+    likes: number;
+    comments: number;
+};
