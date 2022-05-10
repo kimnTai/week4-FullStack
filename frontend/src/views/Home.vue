@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import Sidebar from "../components/Sidebar.vue";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import axios from "axios";
 
-const result = ref<IPost[]>();
+const result = reactive<IPost[]>([]);
 try {
     const { data } = await axios.get("http://localhost:3005/posts");
-    result.value = data.result;
-    console.log(data.result);
+    data.result.forEach((item: IPost) => result.push(item));
 } catch (error) {}
 </script>
 
@@ -37,29 +36,32 @@ try {
                     </div>
                 </div>
                 <ul class="space-y-4">
-                    <li v-for="item in result" class="bg-white rounded-lg border-2 border-black-100 p-6 shadow-card">
+                    <li
+                        v-for="{ user, content, image, createdAt, likes } of result"
+                        class="bg-white rounded-lg border-2 border-black-100 p-6 shadow-card"
+                    >
                         <div class="mb-4 flex items-center">
                             <img
-                                :src="item.user.photo"
+                                :src="user.photo"
                                 alt="avatar"
                                 class="mr-4 h-[45px] w-[45px] flex-shrink-0 object-cover"
                             />
                             <div class="flex-grow">
                                 <a href="#" class="font-bold text-black-100 hover:text-primary hover:underline">
-                                    {{ item.user.name }}
+                                    {{ user.name }}
                                 </a>
-                                <div class="font-baloo text-xs leading-5 text-gray-300">{{ item.createdAt }}</div>
+                                <div class="font-baloo text-xs leading-5 text-gray-300">{{ createdAt }}</div>
                             </div>
                         </div>
                         <p class="text-black-100">
-                            {{ item.content }}
+                            {{ content }}
                         </p>
                         <picture>
-                            <img class="mt-4" :src="item.image" alt="post photo" />
+                            <img class="mt-4" :src="image" alt="post photo" />
                         </picture>
                         <button class="hidden lg:mt-4 lg:inline-block lg:text-xl lg:leading-none lg:text-primary">
                             <i class="fa-regular fa-thumbs-up mr-1"></i>
-                            <span class="inline-block font-baloo leading-[27px] text-black-100">{{ item.likes }}</span>
+                            <span class="inline-block font-baloo leading-[27px] text-black-100">{{ likes }}</span>
                         </button>
                         <div class="hidden lg:mt-[18px] lg:flex lg:items-center">
                             <img
