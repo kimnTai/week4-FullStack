@@ -10,11 +10,10 @@ class PostsController {
      * @memberof PostsController
      */
     async getPosts(req: Request, res: Response): Promise<void> {
-        const { limit } = req.query;
-        const result = await Model.Posts.find()
+        const { sort, keyword } = req.query;
+        const result = await Model.Posts.find(keyword ? { content: new RegExp(`${keyword}`) } : {})
             .populate({ path: "user", select: "name photo" })
-            .sort("-createdAt")
-            .limit(Number(limit) ?? 10);
+            .sort(`${sort === "new" ? "-" : ""}createdAt`);
         res.send({ status: "success", result });
     }
 

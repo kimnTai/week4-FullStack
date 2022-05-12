@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import Sidebar from "../components/Sidebar.vue";
-import { ref, reactive } from "vue";
+import { reactive, watch, onMounted } from "vue";
 import axios from "axios";
 
+const search = reactive({ sort: "new", keyword: "" });
 const result = reactive<IPost[]>([]);
-try {
-    const { data } = await axios.get("http://localhost:3005/posts");
-    data.result.forEach((item: IPost) => result.push(item));
-} catch (error) {}
+
+const getPosts = async (array: IPost[]) => {
+    try {
+        const { data } = await axios.get("http://localhost:3005/posts", { params: search });
+        array.length = 0;
+        data.result.forEach((item: IPost) => array.push(item));
+    } catch (error) {}
+};
+
+onMounted(() => getPosts(result));
+watch(
+    () => search.sort,
+    () => getPosts(result)
+);
 </script>
 
 <template>
@@ -17,20 +28,25 @@ try {
                 <div class="mb-4 lg:flex lg:space-x-3">
                     <div class="relative mb-[6px] lg:mb-0 lg:w-[29.26%] lg:flex-shrink-0">
                         <select
+                            v-model="search.sort"
                             class="block w-full appearance-none border-2 border-black-100 bg-white py-3 pl-4 pr-[28px] font-azeret leading-[22px] text-black-100"
                         >
-                            <option value="" disabled>請選擇</option>
                             <option value="new" selected>最新貼文</option>
+                            <option value="old" selected>最舊貼文</option>
                         </select>
                         <i class="fa-solid fa-angle-down absolute right-4 top-1/2 -translate-y-1/2 text-black-100"></i>
                     </div>
                     <div class="flex lg:flex-grow">
                         <input
+                            v-model.trim="search.keyword"
                             type="text"
                             class="flex-grow rounded-none border-y-2 border-l-2 border-black-100 py-3 px-4 font-azeret leading-[22px] text-black-100"
                             placeholder="搜尋貼文"
                         />
-                        <button class="w-[46px] flex-shrink-0 border-2 border-black-100 bg-primary text-xl text-white">
+                        <button
+                            @click="getPosts(result)"
+                            class="w-[46px] flex-shrink-0 border-2 border-black-100 bg-primary text-xl text-white"
+                        >
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
@@ -82,20 +98,6 @@ try {
                                 </button>
                             </div>
                         </div>
-                        <!-- <ul class="hidden lg:mt-[18px] lg:block lg:space-y-4">
-                            <li class="flex rounded-[12px] bg-[#EFECE7]/30 py-[18px] px-4">
-                                <img
-                                    src="../assets/images/dynamic-wall/user.png"
-                                    alt="avatar"
-                                    class="mr-3 h-10 w-10 flex-shrink-0 object-cover"
-                                />
-                                <div class="flex-grow text-black-100">
-                                    <a href="#" class="hover:text-primary hover:underline">希琳</a>
-                                    <div class="mb-1 text-xs leading-5 text-gray-300">2022/1/11 10:00</div>
-                                    <p>真的～我已經準備冬眠了</p>
-                                </div>
-                            </li>
-                        </ul> -->
                     </li>
                 </ul>
             </div>
