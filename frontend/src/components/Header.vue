@@ -3,12 +3,14 @@
 <template>
     <header class="border-b-[3px] border-black-100">
         <div class="flex justify-between px-4 lg:mx-auto lg:max-w-[869px] lg:px-0">
-            <h1>
-                <a
-                    class="block py-4 font-paytone text-2xl leading-[34px] text-black-100 lg:py-3 lg:text-[26px] lg:leading-[36px]"
-                    >MetaWall</a
-                >
-            </h1>
+            <router-link :to="{ name: 'Home' }">
+                <h1>
+                    <a
+                        class="block py-4 font-paytone text-2xl leading-[34px] text-black-100 lg:py-3 lg:text-[26px] lg:leading-[36px]"
+                        >MetaWall</a
+                    >
+                </h1>
+            </router-link>
             <div class="group flex items-center py-4 lg:relative lg:py-3">
                 <img
                     src="../assets/images/dynamic-wall/user.png"
