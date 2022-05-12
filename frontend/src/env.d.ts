@@ -18,7 +18,7 @@ type IPost = {
     type: string;
     /**貼文圖片 */
     image: string;
-    createdAt: Date;
+    createdAt: Date | string;
     /**內容 */
     content: string;
     /**按讚數 */
