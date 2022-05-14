@@ -4,10 +4,16 @@ import FormData from "form-data";
 import multer from "multer";
 
 class ImageService {
-    _multer: multer.Multer;
-
-    constructor() {
-        this._multer = multer({
+    /**
+     * @description 處理上傳圖片，將 image 放入 body
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @return {*}  {Promise<void>}
+     * @memberof ImageService
+     */
+    handle = (req: Request, res: Response, next: NextFunction): void => {
+        const upload = multer({
             // 限制上傳檔案的大小為 10 MB
             limits: { fileSize: 10 * 1024 ** 2 },
             fileFilter: (req, file, callback) => {
@@ -20,20 +26,11 @@ class ImageService {
                 callback(null, true);
             },
         });
-    }
 
-    /**
-     * @description 處理上傳圖片，並放入 image
-     * @param {Request} req
-     * @param {Response} res
-     * @param {NextFunction} next
-     * @return {*}  {Promise<void>}
-     * @memberof ImageService
-     */
-    handle = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        await new Promise<void>((resolve) => this._multer.single("image")(req, res, () => resolve()));
-        req.body.image = await this.getImageUrl(req);
-        next();
+        upload.single("image")(req, res, async () => {
+            req.body.image = await this.getImageUrl(req);
+            next();
+        });
     };
 
     /**

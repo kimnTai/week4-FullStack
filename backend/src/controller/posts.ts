@@ -26,9 +26,8 @@ class PostsController {
      */
     createPosts = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { content, type, user } = JSON.parse(req.body.form);
-            const { image } = req.body;
-            console.log(content, type, user, image);
+            const { image, form } = req.body;
+            const { content, type, user } = form ? JSON.parse(form) : req.body;
             const result = await Model.Posts.create({ content, type, user, image });
             res.send({ status: "success", result });
         } catch (error: any) {
