@@ -8,7 +8,10 @@ declare module "*.vue" {
 }
 
 type IUser = {
-    [key in "name" | "photo" | "_id"]: string;
+    _id: string;
+    name: string;
+    photo: string;
+    email?: string;
 };
 
 type IPost = {
