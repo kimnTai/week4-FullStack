@@ -30,8 +30,9 @@ type IPost = {
 };
 
 type IForm = {
-    error: string;
-    imageUrl: string;
-    file: nul | File;
-    preview: nul | File;
+    user: string;
+    file: null | File;
+    type: string;
+    tags: string;
+    content: string;
 };
