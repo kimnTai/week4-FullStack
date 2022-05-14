@@ -1,5 +1,28 @@
 <script setup lang="ts">
 import Sidebar from "@/components/Sidebar.vue";
+import { userStore } from "@/stores/user";
+import { reactive } from "vue";
+
+const user = userStore();
+const form = reactive(<IForm>{
+    error: "",
+    imageUrl: "",
+    file: null,
+    preview: null,
+});
+
+const uploadFile = ({ target }: Event) => {
+    const { files } = target as HTMLInputElement;
+    const reader = new FileReader();
+    if (!files) return;
+    form.file = files[0];
+    reader.readAsDataURL(files[0]);
+    reader.onload = ({ target }) => (form.preview = target?.result);
+};
+
+const submit = async () => {
+    const fd = new FormData();
+};
 </script>
 
 <template>
@@ -26,14 +49,16 @@ import Sidebar from "@/components/Sidebar.vue";
                         placeholder="輸入您的貼文內容"
                     ></textarea>
                     <label class="relative inline-block rounded bg-black-100 py-1 px-8 text-white">
-                        <input type="file" class="sr-only" />
+                        <input @change="uploadFile" type="file" class="sr-only" />
                         上傳圖片
                     </label>
-                    <img src="@/assets/images/dynamic-wall/post-photo@2x.png" alt="post photo" class="mt-4" />
-                    <p class="mt-8 text-center text-sm text-red-100 hidden" data-id="error">
-                        圖片檔案過大，僅限 1mb 以下檔案<br />圖片格式錯誤，僅限 JPG、PNG 圖片
+                    <p>{{ form.file?.name }}</p>
+                    <img v-if="form.preview" :src="form.preview" class="mt-4" />
+                    <p v-if="form.error" class="mt-8 text-center text-sm text-red-100">
+                        圖片格式錯誤，僅限 JPG、PNG 圖片
                     </p>
                     <input
+                        @click="submit"
                         type="button"
                         class="mx-auto mt-8 block cursor-pointer w-[68.86%] rounded-lg border-2 border-black-100 bg-gray-200 font-azeret font-bold leading-[50px] text-black-100 hover:bg-yellow-100 hover:shadow-btn"
                         value="送出貼文"

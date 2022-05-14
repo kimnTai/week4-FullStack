@@ -28,3 +28,10 @@ type IPost = {
     likes: number;
     comments: number;
 };
+
+type IForm = {
+    error: string;
+    imageUrl: string;
+    file: nul | File;
+    preview: nul | File;
+};
