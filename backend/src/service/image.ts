@@ -1,36 +1,55 @@
-import express from "express";
-import multer from "multer";
+import { Request, Response, NextFunction } from "express";
 import axios from "axios";
 import FormData from "form-data";
+import multer from "multer";
 
-const router = express.Router();
+class ImageService {
+    _multer: multer.Multer;
 
-const upload = multer({
-    limits: {
-        // 限制上傳檔案的大小為 10 MB
-        fileSize: 10 * 1024 ** 2,
-    },
-    fileFilter: (req, file, callback) => {
-        // 只接受三種圖片格式
-        if (!file.mimetype.match(/\.(jpg|jpeg|png)$/)) {
-            console.log(123);
-            callback(new Error("請上傳正確的檔案格式"));
-            return;
-        }
+    constructor() {
+        this._multer = multer({
+            // 限制上傳檔案的大小為 10 MB
+            limits: { fileSize: 10 * 1024 ** 2 },
+            fileFilter: (req, file, callback) => {
+                // 只接受三種圖片格式
+                if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+                    callback(new Error("請上傳正確的檔案格式"));
+                    return;
+                }
+                // 若接受該檔案，呼叫 cb() 並帶入 true
+                callback(null, true);
+            },
+        });
+    }
 
-        // 若接受該檔案，呼叫 cb() 並帶入 true
-        callback(null, true);
-    },
-});
+    /**
+     * @description 處理上傳圖片，並放入 image
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @return {*}  {Promise<void>}
+     * @memberof ImageService
+     */
+    handle = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        await new Promise<void>((resolve) => this._multer.single("image")(req, res, () => resolve()));
+        req.body.image = await this.getImageUrl(req);
+        next();
+    };
 
-router.post("/", upload.single("image"), async (req, res) => {
-    const encode_image = req.file?.buffer.toString("base64") as string;
-    const data = new FormData();
-    data.append("image", encode_image);
-    const result = await axios.post("https://api.imgur.com/3/image", data, {
-        headers: { Authorization: "Client-ID 62004dc8f2239f1" },
-    });
-    res.send({ status: "success", result: JSON.stringify(result.data) });
-});
+    /**
+     * @description 獲得圖片連結
+     * @param {Request} req
+     * @return {*}  {Promise<string>}
+     * @memberof ImageService
+     */
+    getImageUrl = async (req: Request): Promise<string> => {
+        const formData = new FormData();
+        formData.append("image", req.file?.buffer);
+        const { data } = await axios.post("https://api.imgur.com/3/image", formData, {
+            headers: { Authorization: "Client-ID 62004dc8f2239f1" },
+        });
+        return data.data.link;
+    };
+}
 
-export default router;
+export default new ImageService();

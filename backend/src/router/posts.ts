@@ -1,11 +1,12 @@
 import express from "express";
 import * as Controller from "../controller";
+import * as Service from "../service";
 
 const router = express.Router();
 
 router.get("/", Controller.Post.getPosts);
 
-router.post("/", Controller.Post.createPosts);
+router.post("/", Service.image.handle, Controller.Post.createPosts);
 
 router.delete("/", Controller.Post.deleteAll);
 
