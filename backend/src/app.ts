@@ -5,6 +5,7 @@ import "dotenv/config";
 import "./connection";
 import "./model";
 import * as Router from "./router";
+import * as Service from "./service";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(morgan("dev"));
 
 app.use("/posts", Router.posts);
 app.use("/users", Router.users);
+app.use("/image", Service.image);
 app.listen(process.env.PORT, () => console.log("伺服器啟動中"));
 
 export default app;
