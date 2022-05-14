@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import Sidebar from "../components/Sidebar.vue";
+import Sidebar from "@/components/Sidebar.vue";
 import { reactive, watch, onMounted } from "vue";
 import axios from "axios";
 
 const search = reactive({ sort: "new", keyword: "" });
 const result = reactive<IPost[]>([]);
+const host = import.meta.env.VITE_BACKEND_HOST;
 
-const getPosts = async (array: IPost[]) => {
+const getPosts = async () => {
     try {
-        const { data } = await axios.get("http://localhost:3005/posts", { params: search });
-        array.length = 0;
-        data.result.forEach((item: IPost) => array.push(item));
+        const { data } = await axios.get(`${host}/posts`, { params: search });
+        result.length = 0;
+        data.result.forEach((item: IPost) => result.push(item));
     } catch (error) {}
 };
 
-onMounted(() => getPosts(result));
+onMounted(() => getPosts());
 watch(
     () => search.sort,
-    () => getPosts(result)
+    () => getPosts()
 );
 </script>
 
@@ -44,7 +45,7 @@ watch(
                             placeholder="搜尋貼文"
                         />
                         <button
-                            @click="getPosts(result)"
+                            @click="getPosts()"
                             class="w-[46px] flex-shrink-0 border-2 border-black-100 bg-primary text-xl text-white"
                         >
                             <i class="fa-solid fa-magnifying-glass"></i>
@@ -81,7 +82,7 @@ watch(
                         </button>
                         <div class="hidden lg:mt-[18px] lg:flex lg:items-center">
                             <img
-                                src="../assets/images/dynamic-wall/user.png"
+                                src="@/assets/images/dynamic-wall/user.png"
                                 alt="avatar"
                                 class="mr-2 h-10 w-10 flex-shrink-0 object-cover"
                             />
