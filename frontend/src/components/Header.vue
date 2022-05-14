@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { userStore } from "@/stores/user";
+
+const user = userStore();
+</script>
 
 <template>
     <header class="border-b-[3px] border-black-100">
@@ -12,13 +16,9 @@
                 </h1>
             </router-link>
             <div class="group flex items-center py-4 lg:relative lg:py-3">
-                <img
-                    src="../assets/images/dynamic-wall/user.png"
-                    alt="avatar"
-                    class="mr-[10px] h-[30px] w-[30px] flex-shrink-0 object-cover"
-                />
+                <img :src="user.photo" alt="avatar" class="mr-[10px] h-[30px] w-[30px] flex-shrink-0 object-cover" />
                 <div class="border-b-2 border-black-100 px-1 pb-1 font-azeret font-bold leading-[19px] text-black-100">
-                    Member
+                    {{ user.name }}
                 </div>
                 <div
                     class="hidden lg:absolute lg:-left-1 lg:top-[calc(100%-8px)] lg:isolate lg:w-[182px] lg:group-hover:block"
