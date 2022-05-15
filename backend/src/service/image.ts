@@ -39,13 +39,18 @@ class ImageService {
      * @return {*}  {Promise<string>}
      * @memberof ImageService
      */
-    getImageUrl = async (req: Request): Promise<string> => {
-        const formData = new FormData();
-        formData.append("image", req.file?.buffer);
-        const { data } = await axios.post("https://api.imgur.com/3/image", formData, {
-            headers: { Authorization: "Client-ID 62004dc8f2239f1" },
-        });
-        return data.data.link;
+    getImageUrl = async (req: Request): Promise<string | null> => {
+        try {
+            const formData = new FormData();
+            formData.append("image", req.file?.buffer);
+            const { data } = await axios.post("https://api.imgur.com/3/image", formData, {
+                headers: { Authorization: "Client-ID 62004dc8f2239f1" },
+            });
+            return data.data.link;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     };
 }
 
