@@ -43,7 +43,7 @@ const submit = async () => {
     const { file, ...args } = form;
     const host = import.meta.env.VITE_BACKEND_HOST;
     formData.append("image", file, file.name);
-    formData.append("form", JSON.stringify(args));
+    Object.entries(args).forEach(([key, value]) => formData.append(key, value));
     try {
         await axios.post(`${host}/posts`, formData);
         form.content = "";
