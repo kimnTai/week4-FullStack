@@ -12,5 +12,6 @@ export default defineConfig(({ mode }) => {
                 "@": resolve(__dirname, "src"),
             },
         },
+        base: "./",
     };
 });

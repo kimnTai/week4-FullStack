@@ -1,6 +1,4 @@
-# 期中考 - 前後端分離開發
-
-[切版來源](https://github.com/linche0859/Node.js-Final)
+# [期中考 - 前後端分離開發](https://kimntai.github.io/week4-FullStack/#/)
 
 ## 等級表
 
@@ -19,3 +17,7 @@ LV2：前後端都做
 LV3：前後端都做 + 試著自己接 imgur API
 
 -   先上傳成功回傳圖片網址後，再送出貼文
+
+# 參考資料
+
+[前端切版來源](https://github.com/linche0859/Node.js-Final)
