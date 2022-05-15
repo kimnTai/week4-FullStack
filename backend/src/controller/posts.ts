@@ -27,6 +27,7 @@ class PostsController {
     createPosts = async (req: Request, res: Response): Promise<void> => {
         try {
             const { content, type, user, image } = req.body;
+            await Model.Users.findById(user);
             const result = await Model.Posts.create({ content, type, user, image });
             res.send({ status: "success", result });
         } catch (error: any) {
