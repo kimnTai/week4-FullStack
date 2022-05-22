@@ -140,28 +140,28 @@ var PostsController = /** @class */ (function () {
          * @memberof PostsController
          */
         this.editPosts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id, _a, content, type, name, result, error_2;
+            var _id, _a, content, type, name, result, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        id = req.params.id;
+                        _id = req.params.id;
                         _a = req.body, content = _a.content, type = _a.type, name = _a.name;
                         _b.label = 1;
                     case 1:
-                        _b.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, Model.Posts.findByIdAndUpdate(id, { content: content, type: type, name: name })];
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Model.Posts.findOneAndUpdate({ _id: _id }, { content: content, type: type, name: name }, { new: true })];
                     case 2:
-                        _b.sent();
-                        return [4 /*yield*/, Model.Posts.findById(id)];
-                    case 3:
                         result = _b.sent();
+                        if (!result) {
+                            throw new Error("無此貼文 id");
+                        }
                         res.send({ status: "success", result: result });
-                        return [3 /*break*/, 5];
-                    case 4:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_2 = _b.sent();
                         res.status(400).send({ status: "error", message: error_2.message });
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
