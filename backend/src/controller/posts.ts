@@ -57,11 +57,13 @@ class PostsController {
      * @memberof PostsController
      */
     editPosts = async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.params;
+        const { id: _id } = req.params;
         const { content, type, name } = req.body;
         try {
-            await Model.Posts.findByIdAndUpdate(id, { content, type, name });
-            const result = await Model.Posts.findById(id);
+            const result = await Model.Posts.findOneAndUpdate({ _id }, { content, type, name }, { new: true });
+            if (!result) {
+                throw new Error("無此貼文 id");
+            }
             res.send({ status: "success", result });
         } catch (error: any) {
             res.status(400).send({ status: "error", message: error.message });
